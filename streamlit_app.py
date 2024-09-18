@@ -27,7 +27,7 @@ def remove_user(username):
     else:
         st.error(f"User {username} does not exist.")
 
-# Login Section
+
 st.title("User Management System")
 st.subheader("Admin Login")
 
