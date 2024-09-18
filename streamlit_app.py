@@ -60,3 +60,10 @@ if st.button("Login"):
 
     else:
         st.error("Invalid login credentials.")
+
+if "new_username" not in st.session_state:
+    st.session_state=False
+
+
+    
+    
