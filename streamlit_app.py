@@ -12,11 +12,11 @@ def load_users():
         return {line.split(",")[0]: line.split(",")[1].strip() for line in lines if line.strip()}
     return {}
 
-def save_users(users):
-    """Save users to the CSV file."""
-    with open(USER_DATA_FILE, "w") as file:
-        for username, password in users.items():
-            file.write(f"{username},{password}\n")
+def save_user_append(new_username, new_password):
+    """Append a single user to the CSV file."""
+    with open(USER_DATA_FILE, "a") as file:
+        file.write(f"{new_username},{new_password}\n")
+
 
 # Load users into the session state
 if 'users' not in st.session_state:
