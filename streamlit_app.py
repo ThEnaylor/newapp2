@@ -1,8 +1,35 @@
 import streamlit as st
 import os
+from ftplib import FTP
 
+
+FTP_HOST = "86.27.255.20"
+FTP_PORT = 21
+FTP_USER = "user"
+FTP_PASS = "password"
+
+
+
+def upload_file(filename, content):
+    with FTP() as ftp:
+        ftp.connect(FTP_HOST, FTP_PORT)
+        ftp.login(FTP_USER, FTP_PASS)
+        with open(filename, 'wb') as f:
+            f.write(content.encode())  # Write content to a local file
+        with open(filename, 'rb') as f:
+            ftp.storbinary(f"STOR {filename}", f)  # Upload the file
+        st.success(f"File '{filename}' uploaded to FTP server.")
+
+def read_file(filename):
+    with FTP() as ftp:
+        ftp.connect(FTP_HOST, FTP_PORT)
+        ftp.login(FTP_USER, FTP_PASS)
+        content = []
+        ftp.retrlines(f"RETR {filename}", content.append)  # Retrieve the file
+        st.write("".join(content))
+        
 # Define the file to store user data
-USER_DATA_FILE = "userlist.csv"
+USER_DATA_FILE = read_file("userlist.csv")
 
 def load_users():
     """Load users from the CSV file."""
