@@ -35,7 +35,7 @@ def add_user(new_username, new_password):
         st.error(f"User {new_username} already exists.")
     else:
         st.session_state['users'][new_username] = new_password
-        save_users_append(st.session_state['users'])
+        save_user_append(st.session_state['users'])
         st.success(f"User {new_username} added successfully.")
 
 def remove_user(username):
