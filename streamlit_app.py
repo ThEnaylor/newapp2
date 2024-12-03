@@ -1,37 +1,56 @@
 import streamlit as st
+import json
+import os
 
+# Define the file to store user data
+USER_DATA_FILE = "user_data.json"
+
+def load_users():
+    """Load users from the JSON file."""
+    if os.path.exists(USER_DATA_FILE):
+        with open(USER_DATA_FILE, "r") as file:
+            return json.load(file)
+    return {"Dave": "p1"}  # Default admin credentials
+
+def save_users(users):
+    """Save users to the JSON file."""
+    with open(USER_DATA_FILE, "w") as file:
+        json.dump(users, file)
+
+# Load users into the session state
+if 'users' not in st.session_state:
+    st.session_state['users'] = load_users()
 
 if 'admin_logged_in' not in st.session_state:
     st.session_state['admin_logged_in'] = False
-
-if 'users' not in st.session_state:
-    st.session_state['users'] = {"Dave": "p1"}
-
 
 admin_username = "Dave"
 admin_password = "p1"
 
 def check_login(username, password):
-    return username == admin_username and password == admin_password
-
+    """Check if login credentials are correct."""
+    return username in st.session_state['users'] and st.session_state['users'][username] == password
 
 def add_user(new_username, new_password):
+    """Add a new user."""
     if new_username in st.session_state['users']:
         st.error(f"User {new_username} already exists.")
     else:
         st.session_state['users'][new_username] = new_password
+        save_users(st.session_state['users'])
         st.success(f"User {new_username} added successfully.")
 
 def remove_user(username):
+    """Remove an existing user."""
     if username in st.session_state['users']:
         del st.session_state['users'][username]
+        save_users(st.session_state['users'])
         st.success(f"User {username} removed successfully.")
     else:
         st.error(f"User {username} does not exist.")
 
-
+# Streamlit UI
 st.title("User Management System")
-
 
 if not st.session_state['admin_logged_in']:
     st.subheader("Admin Login")
@@ -45,7 +64,6 @@ if not st.session_state['admin_logged_in']:
         else:
             st.error("Invalid login credentials.")
 else:
-
     st.subheader("Add or Remove Users")
 
     new_username = st.text_input("New Username")
@@ -59,9 +77,12 @@ else:
     if st.button("Remove User"):
         remove_user(remove_username)
 
- 
     st.subheader("Current Users:")
     st.write(st.session_state['users'])
+
+    if st.button("Logout"):
+        st.session_state['admin_logged_in'] = False
+
 
 
 
