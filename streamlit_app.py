@@ -16,8 +16,7 @@ def save_users(users):
     """Save users to the CSV file."""
     with open(USER_DATA_FILE, "w") as file:
         for username, password in users.items():
-            file.write(f"{username},{password}
-"))
+            file.write(f"{username},{password}"))
 
 # Load users into the session state
 if 'users' not in st.session_state:
