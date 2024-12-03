@@ -28,14 +28,14 @@ def check_login(username, password):
     """Check if login credentials are correct."""
     return username in st.session_state['users'] and st.session_state['users'][username] == password
 
-def add_user(new_username, new_password):
-    """Add a new user."""
-    if new_username in st.session_state['users']:
-        st.error(f"User {new_username} already exists.")
-    else:
-        st.session_state['users'][new_username] = new_password
-        save_user_append(new_username, new_password)
-        st.success(f"User {new_username} added successfully.")
+#def add_user(new_username, new_password):
+#    """Add a new user."""
+#    if new_username in st.session_state['users']:
+#        st.error(f"User {new_username} already exists.")
+#    else:
+#        st.session_state['users'][new_username] = new_password
+#        save_user_append(new_username, new_password)
+#        st.success(f"User {new_username} added successfully.")
 
 def remove_user(username):
     """Remove an existing user."""
@@ -68,7 +68,8 @@ else:
     new_password = st.text_input("New Password", type="password")
 
     if st.button("Add User"):
-        add_user(new_username, new_password)
+        with open(USER_DATA_FILE, "a") as file:
+            file.write(f"\n{new_username},{new_password}")
 
     remove_username = st.text_input("Remove Username")
 
