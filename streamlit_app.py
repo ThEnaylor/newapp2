@@ -12,10 +12,9 @@ def load_users():
         return {line.split(",")[0]: line.split(",")[1].strip() for line in lines if line.strip()}
     return {}
 
-def save_users(users):
+def save_users(username, password):
     """Save users to the CSV file."""
     with open(USER_DATA_FILE, "w") as file:
-        for username, password in users.items():
             file.write(f"{username},{password}\n")
 
 # Load users into the session state
