@@ -69,6 +69,8 @@ else:
 
     if st.button("Add User"):
         st.write("button press registered")
+        with open("test.txt", "w") as yid:
+            yid.write("workin")
         with open(USER_DATA_FILE, "a") as file:
             file.write("Working,Working")
 
