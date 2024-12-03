@@ -71,6 +71,7 @@ else:
         st.write("button press registered")
         with open("test.txt", "w") as yid:
             yid.write("workin")
+            yid.close()
         with open(USER_DATA_FILE, "a") as file:
             file.write("Working,Working")
 
