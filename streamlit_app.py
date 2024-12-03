@@ -7,12 +7,12 @@ USER_DATA_FILE = "userlist.csv"
 def load_users():
     """Load users from the CSV file."""
     if os.path.exists(USER_DATA_FILE):
-        with open(USER_DATA_FILE, "r") as file:\n        lines = file.readlines()\n        return {line.split(",")[0]: line.split(",")[1].strip() for line in lines if line.strip()}
+        with open(USER_DATA_FILE, "r") as file:        lines = file.readlines()\n        return {line.split(",")[0]: line.split(",")[1].strip() for line in lines if line.strip()}
     return {}
 
 def save_users(users):
     """Save users to the CSV file."""
-    with open(USER_DATA_FILE, "w") as file:\n        for username, password in users.items():\n            file.write(f"{username},{password}\n")
+    with open(USER_DATA_FILE, "w") as file:        for username, password in users.items():\n            file.write(f"{username},{password}\n")
 
 # Load users into the session state
 if 'users' not in st.session_state:
