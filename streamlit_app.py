@@ -17,7 +17,6 @@ def save_user_append(new_username, new_password):
     with open(USER_DATA_FILE, "a") as file:
         file.write(f"{new_username},{new_password}\n")
 
-
 # Load users into the session state
 if 'users' not in st.session_state:
     st.session_state['users'] = load_users()
@@ -42,7 +41,9 @@ def remove_user(username):
     """Remove an existing user."""
     if username in st.session_state['users']:
         del st.session_state['users'][username]
-        save_users(st.session_state['users'])
+        with open(USER_DATA_FILE, "w") as file:
+            for username, password in st.session_state['users'].items():
+                file.write(f"{username},{password}\n")
         st.success(f"User {username} removed successfully.")
     else:
         st.error(f"User {username} does not exist.")
@@ -68,13 +69,11 @@ else:
 
     if st.button("Add User"):
         add_user(new_username, new_password)
-            
+
     remove_username = st.text_input("Remove Username")
 
     if st.button("Remove User"):
         remove_user(remove_username)
-
-    
 
     if st.button("Logout"):
         st.session_state['admin_logged_in'] = False
