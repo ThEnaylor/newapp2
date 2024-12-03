@@ -1,21 +1,27 @@
 import streamlit as st
-import json
+import csv
 import os
 
 # Define the file to store user data
-USER_DATA_FILE = "user_data.json"
+USER_DATA_FILE = "userlist.csv"
 
 def load_users():
-    """Load users from the JSON file."""
+    """Load users from the CSV file."""
+    users = {}
     if os.path.exists(USER_DATA_FILE):
         with open(USER_DATA_FILE, "r") as file:
-            return json.load(file)
-    return {"Dave": "p1"}  # Default admin credentials
+            reader = csv.reader(file)
+            for row in reader:
+                if len(row) == 2:
+                    users[row[0]] = row[1]
+    return users
 
 def save_users(users):
-    """Save users to the JSON file."""
-    with open(USER_DATA_FILE, "w") as file:
-        json.dump(users, file)
+    """Save users to the CSV file."""
+    with open(USER_DATA_FILE, "w", newline="") as file:
+        writer = csv.writer(file)
+        for username, password in users.items():
+            writer.writerow([username, password])
 
 # Load users into the session state
 if 'users' not in st.session_state:
@@ -23,9 +29,6 @@ if 'users' not in st.session_state:
 
 if 'admin_logged_in' not in st.session_state:
     st.session_state['admin_logged_in'] = False
-
-admin_username = "Dave"
-admin_password = "p1"
 
 def check_login(username, password):
     """Check if login credentials are correct."""
