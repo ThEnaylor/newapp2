@@ -1,27 +1,21 @@
 import streamlit as st
-import csv
+import pandas as pd
 import os
 
 # Define the file to store user data
-USER_DATA_FILE = "userlist.csv"
+USER_DATA_FILE = "userlist.xlsx"
 
 def load_users():
-    """Load users from the CSV file."""
-    users = {}
+    """Load users from the Excel file."""
     if os.path.exists(USER_DATA_FILE):
-        with open(USER_DATA_FILE, "r") as file:
-            reader = csv.reader(file)
-            for row in reader:
-                if len(row) == 2:
-                    users[row[0]] = row[1]
-    return users
+        df = pd.read_excel(USER_DATA_FILE)
+        return dict(zip(df['username'], df['password']))
+    return {}
 
 def save_users(users):
-    """Save users to the CSV file."""
-    with open(USER_DATA_FILE, "w", newline="") as file:
-        writer = csv.writer(file)
-        for username, password in users.items():
-            writer.writerow([username, password])
+    """Save users to the Excel file."""
+    df = pd.DataFrame(list(users.items()), columns=['username', 'password'])
+    df.to_excel(USER_DATA_FILE, index=False)
 
 # Load users into the session state
 if 'users' not in st.session_state:
@@ -85,6 +79,7 @@ else:
 
     if st.button("Logout"):
         st.session_state['admin_logged_in'] = False
+
 
 
 
