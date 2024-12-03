@@ -33,9 +33,9 @@ def add_user(new_username, new_password):
     """Add a new user."""
     if new_username in st.session_state['users']:
         st.error(f"User {new_username} already exists.")
-    else:
+   else:
         st.session_state['users'][new_username] = new_password
-        save_user_append(st.session_state['users'])
+        save_user_append(new_username, new_password)
         st.success(f"User {new_username} added successfully.")
 
 def remove_user(username):
@@ -68,7 +68,7 @@ else:
 
     if st.button("Add User"):
         add_user(new_username, new_password)
-
+            
     remove_username = st.text_input("Remove Username")
 
     if st.button("Remove User"):
