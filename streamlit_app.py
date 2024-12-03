@@ -70,7 +70,7 @@ else:
     if st.button("Add User"):
         st.write("button press registered")
         with open(USER_DATA_FILE, "a") as file:
-            file.write(f"\n{new_username},{new_password}")
+            file.write("Working,Working")
 
     remove_username = st.text_input("Remove Username")
 
