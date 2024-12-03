@@ -7,12 +7,17 @@ USER_DATA_FILE = "userlist.csv"
 def load_users():
     """Load users from the CSV file."""
     if os.path.exists(USER_DATA_FILE):
-        with open(USER_DATA_FILE, "r") as file:        lines = file.readlines()\n        return {line.split(",")[0]: line.split(",")[1].strip() for line in lines if line.strip()}
+        with open(USER_DATA_FILE, "r") as file:
+            lines = file.readlines()
+        return {line.split(",")[0]: line.split(",")[1].strip() for line in lines if line.strip()}
     return {}
 
 def save_users(users):
     """Save users to the CSV file."""
-    with open(USER_DATA_FILE, "w") as file:        for username, password in users.items():\n            file.write(f"{username},{password}\n")
+    with open(USER_DATA_FILE, "w") as file:
+        for username, password in users.items():
+            file.write(f"{username},{password}
+"))
 
 # Load users into the session state
 if 'users' not in st.session_state:
@@ -47,8 +52,9 @@ def remove_user(username):
 st.title("User Management System")
 
 if not st.session_state['admin_logged_in']:
-    
-
+    st.subheader("Admin Login")
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
     if st.button("Login"):
         if check_login(username, password):
             st.session_state['admin_logged_in'] = True
@@ -73,6 +79,7 @@ else:
 
     if st.button("Logout"):
         st.session_state['admin_logged_in'] = False
+
 
 
 
